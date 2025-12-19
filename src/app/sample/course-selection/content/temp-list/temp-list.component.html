@@ -1,0 +1,31 @@
+<p>temp-list works!</p>
+<ul class="list-group container">
+    <li class="list-group-item" *ngFor="let c of this.uiS.tempSelectedListS(); trackBy: trackById">
+        <div class="fw-bold">
+            {{ c.name }}
+            <span class="badge ms-2" [ngClass]="c.type === '必修' ? 'bg-primary' : 'bg-success'">
+                {{ c.type }}
+            </span>
+        </div>
+
+        <div class="text-muted small mt-1">
+            選課代碼：{{ c.code }}｜學分：{{ c.credits }}｜地點：{{ c.location }}
+        </div>
+
+        <!-- 展開 -->
+        <button class="btn btn-link p-0 mt-2" type="button" data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#detail-' + c.id">
+            展開詳情
+        </button>
+
+        <div class="collapse mt-2" [id]="'detail-' + c.id">
+            <div>老師：{{ c.teacher }}</div>
+            <div>上課時間：{{ getTimeText(c.time) }}</div>
+            <div>{{ c.description }}</div>
+
+            <button class="btn btn-sm btn-outline-primary mt-2">
+                加入待選
+            </button>
+        </div>
+    </li>
+</ul>

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, ɵɵsetComponentScope } from '@angular/core';
 import Sortable from 'sortablejs';
-import { SharedModule } from '../shared.module';
+import { SharedModule } from '../../shared.module';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({

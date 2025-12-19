@@ -1,0 +1,27 @@
+<p>course-list works!</p>
+<ul class="list-group container">
+    <li class="list-group-item" *ngFor="let c of dataList; trackBy: trackById">
+        <div class="d-flex justify-content-between align-items-start">
+            <div class="me-3">
+                <div class="fw-bold">
+                    {{ c.name }}
+                    <span class="badge ms-2" [ngClass]="c.type === '必修' ? 'bg-primary' : 'bg-success'">
+                        {{ c.type }}
+                    </span>
+                </div>
+
+                <div class="text-muted small mt-1">
+                    選課代碼：{{ c.code }}｜學分：{{ c.credits }}｜地點：{{ c.location }}
+                </div>
+
+                <div class="mt-2">老師：{{ c.teacher }}</div>
+                <div class="mt-2">上課時間：{{ getTimeText(c.time) }}</div>
+                <div class="mt-2">{{ c.description }}</div>
+                <button class="btn btn-sm btn-outline-secondary mt-2" (click)="addTemp(c)">加入暫存</button>
+                <button class="btn btn-sm btn-outline-primary mt-2" (click)="addSort(c)">加入初選</button>
+            </div>
+
+
+        </div>
+    </li>
+</ul>

@@ -1,0 +1,42 @@
+<div class="container py-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="fw-bold">
+            排序清單
+            <span class="text-muted ms-2">({{ items.length }} 筆)</span>
+        </div>
+
+        <button class="btn btn-sm btn-outline-danger" type="button" (click)="clear()">
+            清空
+        </button>
+    </div>
+
+    <ul class="list-group" #sortableList>
+        <li class="list-group-item d-flex justify-content-between align-items-center sortable-item"
+            *ngFor="let c of items; let i = index; trackBy: trackById" [attr.data-id]="c.id">
+            <div class="d-flex align-items-center gap-2">
+                <span class="drag-handle text-muted">☰</span>
+
+                <div>
+                    <div class="fw-bold">
+                        <span class="text-muted me-2">#{{ i + 1 }}</span>
+                        {{ c.name ?? c.id }}
+                    </div>
+                    <div class="text-muted small">
+                        {{ c.code ?? '' }} {{ c.location ? '｜' + c.location : '' }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 之後要做移除可以打開 -->
+            <!--
+      <button class="btn btn-sm btn-outline-secondary" type="button" (click)="remove(c.id)">
+        移除
+      </button>
+      -->
+        </li>
+
+        <li class="list-group-item text-muted text-center" *ngIf="items.length === 0">
+            尚無排序項目
+        </li>
+    </ul>
+</div>

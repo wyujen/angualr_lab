@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import '../tool/pdf/pdf-fonts.config';
+import '../../tool/pdf/pdf-fonts.config';
 import pdfMake from 'pdfmake/build/pdfmake';
-import { SharedModule } from '../shared.module';
+import { SharedModule } from '../../shared.module';
 @Component({
   selector: 'app-pdf',
   imports: [SharedModule],
