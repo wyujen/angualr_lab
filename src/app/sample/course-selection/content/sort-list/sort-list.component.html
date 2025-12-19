@@ -12,7 +12,7 @@
 
     <ul class="list-group" #sortableList>
         <li class="list-group-item d-flex justify-content-between align-items-center sortable-item"
-            *ngFor="let c of items; let i = index; trackBy: trackById" [attr.data-id]="c.id">
+            *ngFor="let c of items; let i = index" [attr.data-id]="c.id">
             <div class="d-flex align-items-center gap-2">
                 <span class="drag-handle text-muted">☰</span>
 

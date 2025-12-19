@@ -18,10 +18,10 @@ import { CourseSortService } from '../../service/course-sort.service';
   styleUrl: './sort-list.component.scss'
 })
 export class SortListComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('sortableList', { static: false }) sortableList?: ElementRef<HTMLElement>;
+  @ViewChild('sortableList', { static: false })
+  sortableList?: ElementRef<HTMLElement>;
 
   items: any[] = [];
-  trackById = (_: number, item: any) => item.id;
 
   private sortable?: Sortable;
 
@@ -29,32 +29,30 @@ export class SortListComponent implements AfterViewInit, OnDestroy {
     // 初始值
     this.items = this.sortS.sortS();
 
-    // 監聽 signal 更新
+    // ✅ 每次 service 的 signal 變更 -> 更新 items
+    // ✅ 並在 render 後強制把 DOM 依 items 順序排回來（修 4123）
     effect(() => {
       const data = this.sortS.sortS();
-      const ids = data.map(x => x?.id);
-      const dup = ids.filter((id, i) => ids.indexOf(id) !== i);
-
-      console.log('items order', ids);
-      if (dup.length) console.warn('Duplicate ids:', dup);
-
       this.items = data;
+
+      queueMicrotask(() => {
+        const order = this.items.map(x => x.id); // id 是 string
+        this.sortable?.sort(order);
+      });
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (!this.sortableList) return;
 
-    const listElement = this.sortableList.nativeElement;
+    const listEl = this.sortableList.nativeElement;
 
-    this.sortable = Sortable.create(listElement, {
+    this.sortable = Sortable.create(listEl, {
       animation: 150,
-
-      // 只允許拖曳把手（你畫面上的 ☰）
       handle: '.drag-handle',
 
-      // 防止文字選取干擾拖曳
-      preventOnFilter: true,
+      // ✅ 讓 sortable.sort(order) 依照 <li data-id="..."> 進行排序
+      dataIdAttr: 'data-id',
 
       onEnd: (event) => {
         const oldIndex = event.oldIndex;
@@ -63,22 +61,29 @@ export class SortListComponent implements AfterViewInit, OnDestroy {
         if (typeof oldIndex !== 'number' || typeof newIndex !== 'number') return;
         if (oldIndex === newIndex) return;
 
-        // 一定要複製出新陣列（避免改到同一個 reference，signal 不觸發）
+        // ✅ 拖曳時：用資料做 reorder（immutable）
         const next = [...this.items];
         const [moved] = next.splice(oldIndex, 1);
         next.splice(newIndex, 0, moved);
 
+        // 更新回 service（會觸發 effect -> 也會自動 sort DOM）
         this.sortS.setAll(next);
       }
     });
+
+    // ✅ 初次建立後也先對齊一次（避免一開始就有 DOM 順序問題）
+    queueMicrotask(() => {
+      const order = this.items.map(x => x.id);
+      this.sortable?.sort(order);
+    });
   }
 
-  clear() {
+  clear(): void {
     this.sortS.setAll([]);
+    queueMicrotask(() => this.sortable?.sort([]));
   }
 
   ngOnDestroy(): void {
-    // 記得 destroy sortable，避免 memory leak
     this.sortable?.destroy();
   }
 }
