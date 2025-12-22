@@ -37,6 +37,6 @@ export class CourseSortService {
     const exists = this._sortCourseList().some(item => item?.id === id);
     if (exists) return;
 
-    this.setManyRe([data]);
+    this.setMany([data]);
   }
 }

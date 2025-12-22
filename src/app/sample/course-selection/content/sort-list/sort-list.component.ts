@@ -55,6 +55,7 @@ export class SortListComponent implements AfterViewInit, OnDestroy {
       dataIdAttr: 'data-id',
 
       onEnd: (event) => {
+        console.log('eventtttttt', event)
         const oldIndex = event.oldIndex;
         const newIndex = event.newIndex;
 
@@ -71,11 +72,11 @@ export class SortListComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    // ✅ 初次建立後也先對齊一次（避免一開始就有 DOM 順序問題）
-    queueMicrotask(() => {
-      const order = this.items.map(x => x.id);
-      this.sortable?.sort(order);
-    });
+    
+    // queueMicrotask(() => {
+    //   const order = this.items.map(x => x.id);
+    //   this.sortable?.sort(order);
+    // });
   }
 
   clear(): void {
