@@ -1,5 +1,20 @@
-<ul class="list-group container">
-    <li class="list-group-item" *ngFor="let c of dataList; trackBy: trackById">
+<ul class="list-group container ">
+    <div class="input-group mb-3" style="max-width: 400px;">
+        <input type="text" class="form-control" placeholder="請輸入關鍵字" [(ngModel)]="keyword" />
+
+        <!-- 清除按鈕 -->
+
+        <button class="btn btn-secondary" [disabled]="!keyword" type="button" (click)="resetSearch()">
+            重設
+        </button>
+
+        <!-- 搜尋按鈕 -->
+        <button class="btn btn-primary" type="button" (click)="setSearchParam()">
+            搜尋
+        </button>
+    </div>
+
+    <li class="list-group-item" *ngFor="let c of courseFilteredList(); trackBy: trackById">
         <div class="d-flex justify-content-between align-items-start">
             <div class="me-3">
                 <div class="fw-bold">

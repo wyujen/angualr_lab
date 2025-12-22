@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -227,6 +227,8 @@ export class CourseFakedataService {
       "location": "人文大樓 205"
     }
   ]
+
+  fakeDataS = signal<any>(this.fakeData)
 
 
   constructor() { }

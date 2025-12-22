@@ -1,10 +1,11 @@
-import { Component, effect } from '@angular/core';
+import { Component, effect, signal, Signal } from '@angular/core';
 import { CourseFakedataService } from '../../service/course-fakedata.service';
 import { SharedModule } from '../../../../shared.module';
 import { CourseUiService } from '../../service/course-ui.service';
 import { CourseSortService } from '../../service/course-sort.service';
 import { EntitySortableUiService } from '../entity-sortable/entity-sortable-ui.service';
 import { EntityTempUiService } from '../temp-list/entity-temp-ui.service';
+import { createFlexibleSearchSignal, SearchParam } from '../../share/search-share-function';
 export type CourseType = '必修' | '選修';
 
 @Component({
@@ -19,6 +20,14 @@ export type CourseType = '必修' | '選修';
 export class CourseListComponent {
   dataList: any
   trackById = (_: number, item: any) => item.id;
+  keyword = ''
+
+
+  courseSearchParam = signal<SearchParam>({
+    state: 'search',
+    optionList: []
+  })
+  courseFilteredList: Signal<any[]>
 
   constructor(
     private dataS: CourseFakedataService,
@@ -26,6 +35,7 @@ export class CourseListComponent {
     public sortUiS: EntitySortableUiService
   ) {
     this.dataList = this.dataS.fakeData
+    this.courseFilteredList = createFlexibleSearchSignal(this.dataS.fakeDataS, this.courseSearchParam)
   }
   private weekMap: Record<number, string> = {
     1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '日'
@@ -56,6 +66,42 @@ export class CourseListComponent {
   addSort(c: any) {
     // this.sortS.add(c);
     this.sortUiS.add(c)
+  }
+  resetSearch() {
+    this.keyword = ''
+    this.courseSearchParam.set({
+      state: 'search',
+      optionList: []
+    })
+  }
+  setSearchParam() {
+    this.courseSearchParam.set({
+      state: 'search',
+      optionList: [
+        {
+          enabled: true,
+          key: 'name',
+          type: 'keyword',
+          value: this.keyword,
+          mold: 'OR'
+        },
+        {
+          enabled: true,
+          key: 'code',
+          type: 'keyword',
+          value: this.keyword,
+          mold: 'OR'
+        },
+        {
+          enabled: true,
+          key: 'teacher',
+          type: 'keyword',
+          value: this.keyword,
+          mold: 'OR'
+        }
+      ]
+
+    })
   }
 
 }
