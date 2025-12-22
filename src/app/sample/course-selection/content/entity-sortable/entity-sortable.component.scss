@@ -1,0 +1,10 @@
+/* 整個 item 更像 card */
+.list-group-item {
+  border-radius: 0.75rem;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.list-group-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.06);
+}

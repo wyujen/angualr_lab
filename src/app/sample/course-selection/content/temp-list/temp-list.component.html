@@ -1,31 +1,118 @@
-<p>temp-list works!</p>
-<ul class="list-group container">
-    <li class="list-group-item" *ngFor="let c of this.uiS.tempSelectedListS(); trackBy: trackById">
+<div class="container py-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
         <div class="fw-bold">
-            {{ c.name }}
-            <span class="badge ms-2" [ngClass]="c.type === '必修' ? 'bg-primary' : 'bg-success'">
-                {{ c.type }}
-            </span>
+            必修
+            <span class="text-muted ms-2">({{ tempUiS.entityCountS() }} 筆)</span>
         </div>
 
-        <div class="text-muted small mt-1">
-            選課代碼：{{ c.code }}｜學分：{{ c.credits }}｜地點：{{ c.location }}
-        </div>
-
-        <!-- 展開 -->
-        <button class="btn btn-link p-0 mt-2" type="button" data-bs-toggle="collapse"
-            [attr.data-bs-target]="'#detail-' + c.id">
-            展開詳情
+        <button class="btn btn-sm btn-outline-danger" type="button" (click)="clear()">
+            清空
         </button>
+    </div>
+    <ul class="list-group container">
+        <li class="list-group-item text-muted text-center" *ngIf="tempUiS.entityCountS() === 0">
+            尚無暫存項目
+        </li>
+        <li class="list-group-item d-flex flex-column gap-1"
+            *ngFor="let c of tempUiS.entitysTempS(); trackBy: trackById">
+            <div class="d-flex align-items-center gap-2 fw-bold">
+                <!-- 左邊：三角形控制 -->
+                <span class="triangle-handle text-muted" role="button" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#detail-' + c.id" (click)="toggleExpand(c.id)" aria-label="toggle detail">
+                    <span class="triangle" [class.rotate]="expandedIdSet.has(c.id)"></span>
+                </span>
 
-        <div class="collapse mt-2" [id]="'detail-' + c.id">
-            <div>老師：{{ c.teacher }}</div>
-            <div>上課時間：{{ getTimeText(c.time) }}</div>
-            <div>{{ c.description }}</div>
+                <!-- 右邊：標題與 badge -->
+                <span>
+                    {{ c.name }}
+                    <span class="badge ms-2 bg-primary">
+                        必修
+                    </span>
+                </span>
+            </div>
 
-            <button class="btn btn-sm btn-outline-primary mt-2">
-                加入待選
-            </button>
+            <div class="text-muted small mt-1">
+                選課代碼：{{ c.code }}｜學分：{{ c.credits }}｜地點：{{ c.location }}
+            </div>
+
+            <div class="collapse mt-2" [id]="'detail-' + c.id">
+                <div class="detail-box p-2 rounded">
+                    <div class="small">老師：{{ c.teacher }}</div>
+                    <div class="small">上課時間：{{ getTimeText(c.time) }}</div>
+                    <div class="small mt-1">{{ c.description }}</div>
+                </div>
+            </div>
+            <div class="btn-group mt-2" role="group">
+                <button class="btn btn-sm btn-outline-secondary" type="button" (click)="remove(c.id)">
+                    移除
+                </button>
+
+                <button type="button" class="btn btn-sm"
+                    [ngClass]="sortUiS.entitysIdSet().has(c.id) ? 'btn-success' : 'btn-outline-primary'"
+                    [disabled]="sortUiS.entitysIdSet().has(c.id)" (click)="addSort(c)">
+                    {{ sortUiS.entitysIdSet().has(c.id) ? '已加入初選' : '加入初選' }}
+                </button>
+            </div>
+        </li>
+
+    </ul>
+</div>
+<div class="container py-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="fw-bold">
+            選修
+            <span class="text-muted ms-2">({{ tempUiS.entityCountS() }} 筆)</span>
         </div>
-    </li>
-</ul>
+
+        <button class="btn btn-sm btn-outline-danger" type="button" (click)="clear()">
+            清空
+        </button>
+    </div>
+    <ul class="list-group container">
+        <li class="list-group-item text-muted text-center" *ngIf="tempUiS.entityCountS() === 0">
+            尚無暫存項目
+        </li>
+        <li class="list-group-item d-flex flex-column gap-1"
+            *ngFor="let c of tempUiS.entitysTempS(); trackBy: trackById">
+            <div class="d-flex align-items-center gap-2 fw-bold">
+                <!-- 左邊：三角形控制 -->
+                <span class="triangle-handle text-muted" role="button" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#detail-' + c.id" (click)="toggleExpand(c.id)" aria-label="toggle detail">
+                    <span class="triangle" [class.rotate]="expandedIdSet.has(c.id)"></span>
+                </span>
+
+                <!-- 右邊：標題與 badge -->
+                <span>
+                    {{ c.name }}
+                    <span class="badge ms-2 bg-success">
+                        選修
+                    </span>
+                </span>
+            </div>
+
+            <div class="text-muted small mt-1">
+                選課代碼：{{ c.code }}｜學分：{{ c.credits }}｜地點：{{ c.location }}
+            </div>
+
+            <div class="collapse mt-2" [id]="'detail-' + c.id">
+                <div class="detail-box p-2 rounded">
+                    <div class="small">老師：{{ c.teacher }}</div>
+                    <div class="small">上課時間：{{ getTimeText(c.time) }}</div>
+                    <div class="small mt-1">{{ c.description }}</div>
+                </div>
+            </div>
+            <div class="btn-group mt-2" role="group">
+                <button class="btn btn-sm btn-outline-secondary" type="button" (click)="remove(c.id)">
+                    移除
+                </button>
+
+                <button type="button" class="btn btn-sm"
+                    [ngClass]="sortUiS.entitysIdSet().has(c.id) ? 'btn-success' : 'btn-outline-primary'"
+                    [disabled]="sortUiS.entitysIdSet().has(c.id)" (click)="addSort(c)">
+                    {{ sortUiS.entitysIdSet().has(c.id) ? '已加入初選' : '加入初選' }}
+                </button>
+            </div>
+        </li>
+
+    </ul>
+</div>

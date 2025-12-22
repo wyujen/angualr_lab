@@ -1,0 +1,53 @@
+/* 整個 item 更像 card */
+.list-group-item {
+  border-radius: 0.75rem;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.list-group-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.06);
+}
+
+/* icon button 看起來像小控制鈕 */
+.btn-icon {
+  padding: 0.25rem 0.4rem;
+  line-height: 1;
+}
+
+/* 三角形：更精緻一點、用 currentColor 讓它跟按鈕顏色走 */
+.triangle {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 7px solid currentColor;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  transition: transform 0.2s ease;
+}
+
+.triangle.rotate {
+  transform: rotate(90deg);
+}
+
+/* 展開內容的 card-body 感 */
+.detail-box {
+  background: #f8f9fa; /* bootstrap light */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: 0.25rem solid #0d6efd; /* primary accent */
+}
+.triangle-handle {
+  cursor: pointer;
+  user-select: none;
+  line-height: 1;
+  padding: 0.25rem 0.4rem;
+  border-radius: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.triangle-handle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #212529;
+}

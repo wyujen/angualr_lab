@@ -1,4 +1,3 @@
-<p>course-list works!</p>
 <ul class="list-group container">
     <li class="list-group-item" *ngFor="let c of dataList; trackBy: trackById">
         <div class="d-flex justify-content-between align-items-start">
@@ -17,8 +16,19 @@
                 <div class="mt-2">老師：{{ c.teacher }}</div>
                 <div class="mt-2">上課時間：{{ getTimeText(c.time) }}</div>
                 <div class="mt-2">{{ c.description }}</div>
-                <button class="btn btn-sm btn-outline-secondary mt-2" (click)="addTemp(c)">加入暫存</button>
-                <button class="btn btn-sm btn-outline-primary mt-2" (click)="addSort(c)">加入初選</button>
+                <div class="btn-group mt-2" role="group">
+                    <button type="button" class="btn btn-sm"
+                        [ngClass]="tempUiS.entitysIdSet().has(c.id) ? 'btn-secondary' : 'btn-outline-secondary'"
+                        [disabled]="tempUiS.entitysIdSet().has(c.id)" (click)="addTemp(c)">
+                        {{ tempUiS.entitysIdSet().has(c.id) ? '已暫存' : '加入暫存' }}
+                    </button>
+
+                    <button type="button" class="btn btn-sm"
+                        [ngClass]="sortUiS.entitysIdSet().has(c.id) ? 'btn-success' : 'btn-outline-primary'"
+                        [disabled]="sortUiS.entitysIdSet().has(c.id)" (click)="addSort(c)">
+                        {{ sortUiS.entitysIdSet().has(c.id) ? '已加入初選' : '加入初選' }}
+                    </button>
+                </div>
             </div>
 
 

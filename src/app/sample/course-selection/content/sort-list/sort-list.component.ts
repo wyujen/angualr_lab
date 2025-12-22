@@ -20,10 +20,10 @@ import { CourseSortService } from '../../service/course-sort.service';
 export class SortListComponent implements AfterViewInit, OnDestroy {
   @ViewChild('sortableList', { static: false })
   sortableList?: ElementRef<HTMLElement>;
+  private sortable?: Sortable;
 
   items: any[] = [];
 
-  private sortable?: Sortable;
 
   constructor(public sortS: CourseSortService) {
     // 初始值
@@ -36,7 +36,7 @@ export class SortListComponent implements AfterViewInit, OnDestroy {
       this.items = data;
 
       queueMicrotask(() => {
-        const order = this.items.map(x => x.id); // id 是 string
+        const order = data.map(x => x.id); // id 是 string
         this.sortable?.sort(order);
       });
     });
@@ -72,7 +72,7 @@ export class SortListComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    
+
     // queueMicrotask(() => {
     //   const order = this.items.map(x => x.id);
     //   this.sortable?.sort(order);
@@ -81,7 +81,7 @@ export class SortListComponent implements AfterViewInit, OnDestroy {
 
   clear(): void {
     this.sortS.setAll([]);
-    queueMicrotask(() => this.sortable?.sort([]));
+    // queueMicrotask(() => this.sortable?.sort([]));
   }
 
   ngOnDestroy(): void {

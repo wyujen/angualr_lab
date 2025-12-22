@@ -3,6 +3,8 @@ import { CourseFakedataService } from '../../service/course-fakedata.service';
 import { SharedModule } from '../../../../shared.module';
 import { CourseUiService } from '../../service/course-ui.service';
 import { CourseSortService } from '../../service/course-sort.service';
+import { EntitySortableUiService } from '../entity-sortable/entity-sortable-ui.service';
+import { EntityTempUiService } from '../temp-list/entity-temp-ui.service';
 export type CourseType = '必修' | '選修';
 
 @Component({
@@ -20,14 +22,10 @@ export class CourseListComponent {
 
   constructor(
     private dataS: CourseFakedataService,
-    private uiS: CourseUiService,
-    private sortS: CourseSortService
+    public tempUiS: EntityTempUiService,
+    public sortUiS: EntitySortableUiService
   ) {
     this.dataList = this.dataS.fakeData
-    effect(() => {
-      const temp = this.uiS.tempSelectedListS()
-      console.log('temp', temp)
-    })
   }
   private weekMap: Record<number, string> = {
     1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '日'
@@ -53,10 +51,11 @@ export class CourseListComponent {
     return parts.join('；');
   }
   addTemp(c: any) {
-    this.uiS.set(c)
+    this.tempUiS.add(c)
   }
   addSort(c: any) {
-    this.sortS.add(c);
+    // this.sortS.add(c);
+    this.sortUiS.add(c)
   }
 
 }
