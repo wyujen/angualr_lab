@@ -1,4 +1,10 @@
 import { computed, Injectable, signal } from '@angular/core';
+export interface TimetableCell {
+  name: string;
+  teacher: string;
+  location: string;
+  type: string
+}
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +15,8 @@ export class EntitySortableUiService {
   entitysSortS = this._entitysSortWS.asReadonly()
   entitysIdSet = computed(() => new Set(this.entitysSortS().map(entity => entity.id)))
   entityCountS = computed(() => this.entitysSortS().length)
+
+  entitysTableS = computed(() => this.buildTimetable(this.entitysSortS()))
 
   constructor() { }
 
@@ -87,5 +95,51 @@ export class EntitySortableUiService {
     if (Number.isFinite(n) && n >= 0) return n;
     return Number.POSITIVE_INFINITY;
   }
+
+  private buildTimetable(courses: any[]) {
+    const grid: TimetableCell[][][] = Array.from({ length: 15 }, () =>
+      Array.from({ length: 7 }, () => [])
+    );
+
+    // 用來計算實際使用範圍
+    let minRow = 14, maxRow = 8;
+    let minCol = 6, maxCol = 4;
+    let hasAny = false;
+
+    courses.forEach((course: any) => {
+      (course.time ?? []).forEach(([day, period]: [number, number]) => {
+        const row = period - 1; // 0~14
+        const col = day - 1;    // 0~6
+        if (row < 0 || row > 14 || col < 0 || col > 6) return;
+
+        grid[row][col].push({
+          name: course.name,
+          teacher: course.teacher,
+          location: course.location,
+          type: course.type
+        });
+
+        hasAny = true;
+        if (row < minRow) minRow = row;
+        if (row > maxRow) maxRow = row;
+        if (col < minCol) minCol = col;
+        if (col > maxCol) maxCol = col;
+      });
+    });
+
+    // 沒任何課：就給預設範圍（例如顯示週一~五、第1~9節）
+    if (!hasAny) {
+      minRow = 0; maxRow = 8;   // 1~9節
+      minCol = 0; maxCol = 4;   // 週一~五
+    }
+
+    // 你也可以在這裡加“保底規則”：如果只出現週六，仍保留週一~五？
+    // 依你需求調整
+    const data = { grid, minRow, maxRow, minCol, maxCol }
+    console.log('datttttta', data)
+
+    return data;
+  }
+
 
 }

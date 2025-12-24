@@ -13,9 +13,8 @@ import { EntitySortableUiService } from './entity-sortable-ui.service';
 })
 export class EntitySortableComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('sortableVC', { static: false })
-  sortabVC?: ElementRef<HTMLElement>;
+  sortableVC?: ElementRef<HTMLElement>;
   private sortable?: Sortable;
-
   constructor(
     public sortUiS: EntitySortableUiService
   ) {
@@ -35,24 +34,28 @@ export class EntitySortableComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   ngAfterViewInit(): void {
-    if (!this.sortabVC) return
-    const listEl = this.sortabVC.nativeElement;
+    if (!this.sortableVC) return;
 
-    this.sortable = Sortable.create(listEl, {
+    const el = this.sortableVC.nativeElement as HTMLElement;
+
+    this.sortable = Sortable.create(el, {
       animation: 150,
+      draggable: '.sortable-item',
       handle: '.drag-handle',
       dataIdAttr: 'data-id',
-      onEnd: (event) => {
-        const oldIndex = event.oldIndex
-        const newIndex = event.newIndex
 
-        if (typeof oldIndex !== 'number' || typeof newIndex !== 'number') return;
+      // ✅ 官方建議的 class（不需要自己處理）
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+
+      onEnd: (evt) => {
+        const { oldIndex, newIndex } = evt;
+        if (oldIndex == null || newIndex == null) return;
         if (oldIndex === newIndex) return;
 
-        this.sortUiS.updateSort(oldIndex, newIndex)
+        this.sortUiS.updateSort(oldIndex, newIndex);
       }
-    })
-
+    });
   }
   clear() {
     this.sortUiS.clear()

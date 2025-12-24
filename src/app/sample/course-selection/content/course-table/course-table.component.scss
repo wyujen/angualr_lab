@@ -1,0 +1,63 @@
+/* 外層：捲動容器（sticky 參考） */
+.table-wrap {
+  overflow: auto;
+  max-height: 80vh; /* 可依需求調整 */
+}
+
+/* 表頭底色 */
+.thead-bg th {
+  background: #f1f3f5;
+  font-weight: 600;
+}
+
+/* 節次欄底色 */
+.period-bg {
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+/* 一般格子 */
+.cell {
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* 多志願格子（只用底色提示） */
+.multi-choice-bg {
+  background: #fff3cd; /* warning-subtle */
+}
+
+/* day 置頂 */
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f1f3f5;
+}
+
+/* 節次置左 */
+.sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #f8f9fa;
+}
+
+/* 左上角（同時 top + left） */
+.sticky-corner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background: #f1f3f5;
+}
+
+/* 讓 truncate 在 flex 內生效 */
+.minw0 {
+  min-width: 0;
+}
+
+/* 卡片高度穩定（四象限好看） */
+.card-minh {
+  min-height: 86px;
+}

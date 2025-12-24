@@ -1,128 +1,27 @@
-<div class="container py-3">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="fw-bold">
-            必修
-            <span class="text-muted ms-2">({{ sortUiS.entityCountS() }} 筆)</span>
-        </div>
-
-        <button class="btn btn-sm btn-outline-danger" type="button" (click)="clear()">
-            清空
-        </button>
-    </div>
-
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center sortable-item"
-            *ngFor="let c of sortUiS.entitysSortS(); let i = index" [attr.data-id]="c.id">
-            <div class="d-flex align-items-center gap-2">
-
-                <div>
-                    <div class="fw-bold">
-                        <span class="text-muted me-2">#0</span>
-                        {{ c.name ?? c.id }}
-                    </div>
-                    <div class="text-muted small">
-                        {{ c.code ?? '' }} {{ c.location ? '｜' + c.location : '' }}
-                    </div>
-                </div>
+<ul class="list-group" #sortableVC>
+    <li class="list-group-item d-flex justify-content-between align-items-center sortable-item"
+        *ngFor="let c of sortUiS.entitysSortS(); let i = index" [attr.data-id]="c.id">
+        <div class="d-flex align-items-center gap-2">
+            <div class="drag-handle">
+                <span class="drag-icon">☰</span>
             </div>
 
-            <button class="btn btn-sm btn-outline-secondary" type="button" (click)="remove(c.id)">
-                移除
-            </button>
-
-        </li>
-
-        <li class="list-group-item text-muted text-center" *ngIf="sortUiS.entityCountS() === 0">
-            尚無排序項目
-        </li>
-    </ul>
-    <button class="btn btn-sm btn-outline-primary mt-2" type="button" (click)="submit()">
-        送出
-    </button>
-</div>
-<div class="container py-3">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="fw-bold">
-            選修排序
-            <span class="text-muted ms-2">({{ sortUiS.entityCountS() }} 筆)</span>
-        </div>
-
-        <button class="btn btn-sm btn-outline-danger" type="button" (click)="clear()">
-            清空
-        </button>
-    </div>
-
-    <ul class="list-group" #sortableVC>
-        <li class="list-group-item d-flex justify-content-between align-items-center sortable-item"
-            *ngFor="let c of sortUiS.entitysSortS(); let i = index" [attr.data-id]="c.id">
-            <div class="d-flex align-items-center gap-2">
-                <span class="drag-handle text-muted">☰</span>
-
-                <div>
-                    <div class="fw-bold">
-                        <span class="text-muted me-2">#{{ i + 1 }}</span>
-                        {{ c.name ?? c.id }}
-                    </div>
-                    <div class="text-muted small">
-                        {{ c.code ?? '' }} {{ c.location ? '｜' + c.location : '' }}
-                    </div>
+            <div>
+                <div class="fw-bold">
+                    <span class="text-muted me-2">#{{ i + 1 }}</span>
+                    {{ c.name ?? c.id }}
+                </div>
+                <div class="text-muted small">
+                    {{ c.code ?? '' }} {{ c.location ? '｜' + c.location : '' }}
                 </div>
             </div>
-
-            <button class="btn btn-sm btn-outline-secondary" type="button" (click)="remove(c.id)">
-                移除
-            </button>
-
-        </li>
-
-        <li class="list-group-item text-muted text-center" *ngIf="sortUiS.entityCountS() === 0">
-            尚無排序項目
-        </li>
-    </ul>
-    <button class="btn btn-sm btn-outline-primary mt-2" type="button" (click)="submit()">
-        送出
-    </button>
-</div>
-<div class="container py-3">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="fw-bold">
-            通識排序
-            <span class="text-muted ms-2">({{ sortUiS.entityCountS() }} 筆)</span>
         </div>
 
-        <button class="btn btn-sm btn-outline-danger" type="button" (click)="clear()">
-            清空
+        <button class="btn btn-sm btn-outline-secondary" type="button" (click)="remove(c.id)">
+            移除
         </button>
-    </div>
-
-    <ul class="list-group" #sortableVC>
-        <li class="list-group-item d-flex justify-content-between align-items-center sortable-item"
-            *ngFor="let c of sortUiS.entitysSortS(); let i = index" [attr.data-id]="c.id">
-            <div class="d-flex align-items-center gap-2">
-                <span class="drag-handle text-muted">☰</span>
-
-                <div>
-                    <div class="fw-bold">
-                        <span class="text-muted me-2">#{{ i + 1 }}</span>
-                        {{ c.name ?? c.id }}
-                    </div>
-                    <div class="text-muted small">
-                        {{ c.code ?? '' }} {{ c.location ? '｜' + c.location : '' }}
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn btn-sm btn-outline-secondary" type="button" (click)="remove(c.id)">
-                移除
-            </button>
-
-        </li>
-
-        <li class="list-group-item text-muted text-center" *ngIf="sortUiS.entityCountS() === 0">
-            尚無排序項目
-        </li>
-    </ul>
-    <button class="btn btn-sm btn-outline-primary mt-2" type="button" (click)="submit()">
-        送出
-    </button>
-</div>
+    </li>
+    <li class="list-group-item text-muted text-center" *ngIf="sortUiS.entityCountS() === 0">
+        尚無初選項目
+    </li>
+</ul>

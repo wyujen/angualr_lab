@@ -4,6 +4,7 @@ import { SharedModule } from '../../shared.module';
 import { SortListComponent } from './content/sort-list/sort-list.component';
 import { TempListComponent } from './content/temp-list/temp-list.component';
 import { EntitySortableComponent } from './content/entity-sortable/entity-sortable.component';
+import { CourseTableComponent } from './content/course-table/course-table.component';
 
 @Component({
   selector: 'app-course-selection',
@@ -12,6 +13,7 @@ import { EntitySortableComponent } from './content/entity-sortable/entity-sortab
     EntitySortableComponent,
     SortListComponent,
     TempListComponent,
+    CourseTableComponent,
     SharedModule
   ],
   templateUrl: './course-selection.component.html',

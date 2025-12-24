@@ -1,0 +1,82 @@
+<div class="table-responsive table-wrap">
+    <table class="table text-center align-middle mb-0 timetable"
+        style="table-layout: fixed; width: max-content; min-width: 100%;">
+        <thead>
+            <tr class="thead-bg">
+                <!-- 左上角（節次 × day） -->
+                <th class="sticky-corner" style="width: 90px;">
+                    節次
+                </th>
+
+                <!-- day（置頂） -->
+                <ng-container *ngFor="let day of weekdays; let col = index">
+                    <th *ngIf="col <= sortUiS.entitysTableS().maxCol" class="sticky-top" style="width: 180px;">
+                        {{ day }}
+                    </th>
+                </ng-container>
+            </tr>
+        </thead>
+
+        <tbody>
+            <ng-container *ngFor="let period of periods; let row = index">
+                <tr *ngIf="row <= sortUiS.entitysTableS().maxRow">
+                    <!-- 節次（置左） -->
+                    <th class="period-bg sticky-left" style="width: 90px;">
+                        {{ period }}
+                    </th>
+
+                    <!-- 課表格 -->
+                    <ng-container *ngFor="let day of weekdays; let col = index">
+                        <td *ngIf="col <= sortUiS.entitysTableS().maxCol" class="cell px-3 py-2"
+                            style="width: 180px; max-width: 180px;" [ngClass]="{
+                  'multi-choice-bg':
+                    (sortUiS.entitysTableS().grid[row][col]?.length ?? 0) >= 2
+                }">
+
+                            <!-- 有課 -->
+                            <ng-container *ngIf="sortUiS.entitysTableS().grid[row][col]?.length; else empty">
+                                <div class="d-grid gap-2">
+                                    <div *ngFor="let cell of sortUiS.entitysTableS().grid[row][col]; let idx = index"
+                                        class="card shadow-sm w-100">
+                                        <div class="card-body p-2 text-start d-flex flex-column card-minh">
+
+                                            <!-- 左上 / 右上 -->
+                                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                                <div class="fw-bold text-truncate flex-grow-1 minw0">
+                                                    {{ cell.name }}
+                                                </div>
+
+                                                <span class="badge flex-shrink-0 text-nowrap"
+                                                    [ngClass]="cell.type === '必修' ? 'bg-primary' : 'bg-success'">
+                                                    {{ cell.type }}
+                                                </span>
+                                            </div>
+
+                                            <!-- 左下 / 右下 -->
+                                            <div class="d-flex justify-content-between align-items-end mt-auto gap-2">
+                                                <div class="flex-grow-1 minw0">
+                                                    <div class="small text-muted text-truncate">{{ cell.teacher }}</div>
+                                                    <div class="small text-muted text-truncate">{{ cell.location }}
+                                                    </div>
+                                                </div>
+
+                                                <small class="text-muted text-nowrap">#{{ idx + 1 }}</small>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <!-- 空堂 -->
+                            <ng-template #empty>
+                                <span class="text-muted">—</span>
+                            </ng-template>
+
+                        </td>
+                    </ng-container>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

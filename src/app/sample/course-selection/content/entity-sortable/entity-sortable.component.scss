@@ -1,10 +1,40 @@
-/* 整個 item 更像 card */
-.list-group-item {
-  border-radius: 0.75rem;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+/* 禁止拖曳時選到文字（官方也建議） */
+.sortable-item {
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.list-group-item:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.06);
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px; /* 👈 把手寬度 */
+  height: 36px; /* 👈 把手高度 */
+  border-radius: 0.5rem;
+
+  color: #6c757d; /* bootstrap text-muted */
+  cursor: grab;
+
+  /* 讓平板好點 */
+  touch-action: none;
+}
+
+.drag-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* 拖曳中 */
+.sortable-chosen {
+  background: rgba(0, 0, 0, 0.03);
+}
+.sortable-ghost {
+  opacity: 0.4;
+}
+
+/* 按下感覺 */
+.drag-handle:active {
+  cursor: grabbing;
+  background: rgba(0, 0, 0, 0.06);
 }
